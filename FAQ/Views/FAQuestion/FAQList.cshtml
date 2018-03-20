@@ -1,0 +1,84 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@model IPagedList<FAQ.Models.FAQuestions>
+
+@{
+    ViewBag.Title = "FAQ List";
+}
+
+<div id="addModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content" id="addmodal">
+            @*@{ Html.RenderAction("AddFAQ", "FAQCRUD", new { id = ViewBag.ID });}*@
+        </div>
+    </div>
+</div>
+<div id="editModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div id="editmodal-content" class="modal-content">
+            
+        </div>
+    </div>
+</div>
+
+
+<h2>FAQ List</h2>
+<p>
+    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#addModal" onclick="AddQuestion(@ViewBag.ID)">Create New</button>
+</p>
+@if (Model.Count() == 0)
+{
+    <p>No Results to Display</p>
+}
+else
+{
+<b>
+    @ViewBag.CategoryName
+        (SiteCode:@ViewBag.SiteCode)
+</b>
+<table class="table">
+
+@*@foreach (var item in Model)*@
+    @for (int i = 0; i < Model.Count(); i++)
+    {
+
+    <tr>
+        <td>
+            @Html.ActionLink("Up", "Order", "FAQuestion", new { id = Model[i].QuestionID, value = "-1", backto = ViewBag.ID }, new { @class = (i == 0)?"btn btn-success disabled": "btn btn-success"})
+            @Html.ActionLink("Down", "Order", "FAQuestion", new { id = Model[i].QuestionID, value = "0", backto = ViewBag.ID  }, new { @class = (i == Model.Count() - 1)?"btn btn-success disabled": "btn btn-success" })
+            <a href="#" onclick="EditQuestion(@Model[i].QuestionID)">@Model[i].QuestionName</a>
+            @*@Html.ActionLink(item.QuestionName,"", new { id = item.QuestionID,onclick="myfun("+ item.QuestionID + ")" }, null)*@
+        </td>
+    </tr>
+}
+</table>
+    @Html.PagedListPager(Model, Page => Url.Action("FAQList", new { Page }))
+}
+<script>
+    function EditQuestion(questionid) {
+        $.ajax({
+            url: '@Url.Action("Edit", "FAQCRUD")',
+                dataType: 'html',
+                data: { id: questionid },
+                type: 'GET',
+                success: function (content) {
+                    $("#editmodal-content").html(content);
+                    $('#editModal').modal('show');
+                }
+        });
+    }
+
+    function AddQuestion(categoryid)
+    {
+        $.ajax({
+                url: '@Url.Action("AddFAQ", "FAQCRUD")',
+                dataType: 'html',
+                data: { id: categoryid },
+                type: 'GET',
+                success: function (content) {
+                    $("#addmodal").html(content);
+                }
+        });
+    }
+</script>
+
