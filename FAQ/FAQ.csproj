@@ -149,7 +149,6 @@
     <Content Include="Views\FAQuestion\FAQList.cshtml" />
     <Content Include="Views\FAQCRUD\AddFAQ.cshtml" />
     <Content Include="Views\FAQCRUD\Edit.cshtml" />
-    <Content Include="Views\FAQCRUD\gfsdhg.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
