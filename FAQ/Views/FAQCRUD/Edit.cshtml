@@ -77,9 +77,8 @@
 <script>
     function HideQuestion(questionid)
     {
-        var checked = 1;
+        var checked = 0;
         if ($("input[name='Hide']:checked").val() == "true") { checked = 1; }
-        else { checked = 0; }
         $.ajax({
                 url: '@Url.Action("Hide", "FAQCRUD")',
                 dataType: 'json',
